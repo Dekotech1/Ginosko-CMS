@@ -21,7 +21,7 @@ interface LoginPageProps {
 }
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
-  const { login, quickLoginDemo, forgotPassword, loading, error, clearError } = useAuth();
+  const { login, signup, quickLoginDemo, forgotPassword, loading, error, clearError } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -114,14 +114,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
               {/* Email Input */}
               <div className="space-y-1.5">
                 <label className="text-[10px] font-bold uppercase text-zinc-400 block">
-                  Corporate Email Address
+                  Email Address
                 </label>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="email"
                     required
-                    placeholder="executive@ginosko.com"
+                    placeholder="danganajohn72@gmail.com"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     className="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 transition-colors"
@@ -320,14 +320,18 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
         {/* SIGNUP VIEW */}
         {viewMode === 'signup' && (
           <div className="p-6 sm:p-8 rounded-2xl bg-[#0c0c0e] border border-zinc-800 space-y-5 font-mono shadow-2xl">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-white border-b border-zinc-800 pb-3">
-              Register New Executive User
-            </h2>
+            <div className="border-b border-zinc-800 pb-3 flex items-center justify-between">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-white">
+                Register CMS User Account
+              </h2>
+              <span className="text-[10px] text-emerald-400 font-sans">
+                Personal or Corporate Email
+              </span>
+            </div>
 
             <form 
               onSubmit={async (e) => {
                 e.preventDefault();
-                const { signup } = useAuth();
                 const ok = await signup(signupEmail, signupPassword, signupName, signupRole);
                 if (ok && onSuccess) onSuccess();
               }} 
@@ -338,22 +342,36 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Dr. Aris Thorne"
+                  placeholder="e.g. John Dangana"
                   value={signupName}
                   onChange={e => setSignupName(e.target.value)}
                   className="w-full px-3 py-2.5 text-xs rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-emerald-500"
+                  id="signup-name-input"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold uppercase text-zinc-400 block">Corporate Email</label>
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] font-bold uppercase text-zinc-400 block">
+                    Email Address (Personal or Corporate)
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setSignupEmail('danganajohn72@gmail.com')}
+                    className="text-[10px] text-emerald-400 hover:underline font-sans"
+                    id="use-my-email-btn"
+                  >
+                    Use my email
+                  </button>
+                </div>
                 <input
                   type="email"
                   required
-                  placeholder="name@ginosko.com"
+                  placeholder="danganajohn72@gmail.com"
                   value={signupEmail}
                   onChange={e => setSignupEmail(e.target.value)}
                   className="w-full px-3 py-2.5 text-xs rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-emerald-500"
+                  id="signup-email-input"
                 />
               </div>
 
@@ -366,6 +384,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
                   value={signupPassword}
                   onChange={e => setSignupPassword(e.target.value)}
                   className="w-full px-3 py-2.5 text-xs rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-emerald-500"
+                  id="signup-password-input"
                 />
               </div>
 
@@ -375,6 +394,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
                   value={signupRole}
                   onChange={e => setSignupRole(e.target.value as UserRole)}
                   className="w-full px-3 py-2.5 text-xs rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none"
+                  id="signup-role-select"
                 >
                   <option value="Super Admin">Super Admin (Full Rights)</option>
                   <option value="Admin">Admin (Content & System Governance)</option>
@@ -387,15 +407,24 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
                   type="button"
                   onClick={() => setViewMode('login')}
                   className="flex-1 py-2.5 text-xs font-bold rounded-xl bg-zinc-900 text-zinc-300 border border-zinc-800 hover:bg-zinc-800"
+                  id="signup-cancel-btn"
                 >
                   Back to Login
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-1 py-2.5 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white"
+                  className="flex-1 py-2.5 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center gap-2 cursor-pointer"
+                  id="signup-submit-btn"
                 >
-                  Create Account
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Creating Account...</span>
+                    </>
+                  ) : (
+                    <span>Create Account</span>
+                  )}
                 </button>
               </div>
             </form>
