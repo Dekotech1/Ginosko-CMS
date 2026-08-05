@@ -1,5 +1,6 @@
 import React from 'react';
 import { useCMS } from '../../context/CMSContext';
+import { useAuth } from '../../context/AuthContext';
 import { 
   LayoutDashboard, 
   FileText, 
@@ -17,7 +18,9 @@ import {
   Server,
   Database,
   Cpu,
-  ChevronDown
+  ChevronDown,
+  LogOut,
+  UserCheck
 } from 'lucide-react';
 
 export const AdminSidebar: React.FC = () => {
@@ -27,9 +30,10 @@ export const AdminSidebar: React.FC = () => {
     setSection, 
     articles, 
     leads, 
-    currentUser,
     setActiveArticleId
   } = useCMS();
+
+  const { userProfile, userRole, logout } = useAuth();
 
   const draftCount = articles.filter(a => a.status === 'draft' || a.status === 'in_review').length;
   const newLeadsCount = leads.filter(l => l.status === 'new').length;
@@ -112,12 +116,24 @@ export const AdminSidebar: React.FC = () => {
             id="admin-nav-leads"
           />
 
+          {(userRole === 'Super Admin' || userRole === 'Admin') && (
+            <SidebarNavItem
+              label="05_user_access.iam"
+              icon={<UserCheck className="w-3.5 h-3.5 text-emerald-400" />}
+              active={adminView === 'users'}
+              onClick={() => setAdminView('users')}
+              badge="Firestore"
+              badgeColor="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
+              id="admin-nav-users"
+            />
+          )}
+
           <div className="px-2 py-1.5 pt-3 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-zinc-500">
             <span>SYSTEM & AI PIPELINE</span>
           </div>
 
           <SidebarNavItem
-            label="05_telemetry_metrics.log"
+            label="06_telemetry_metrics.log"
             icon={<BarChart3 className="w-3.5 h-3.5 text-emerald-400" />}
             active={adminView === 'analytics'}
             onClick={() => setAdminView('analytics')}
@@ -125,7 +141,7 @@ export const AdminSidebar: React.FC = () => {
           />
 
           <SidebarNavItem
-            label="06_cms_settings.config"
+            label="07_cms_settings.config"
             icon={<Settings className="w-3.5 h-3.5 text-zinc-400" />}
             active={adminView === 'settings'}
             onClick={() => setAdminView('settings')}
@@ -140,32 +156,47 @@ export const AdminSidebar: React.FC = () => {
               <Cpu className="w-3 h-3 text-emerald-400" />
               <span>Stack Telemetry</span>
             </span>
-            <span className="text-emerald-400">READY</span>
+            <span className="text-emerald-400">AUTHENTICATED</span>
           </div>
           <div className="space-y-0.5 text-zinc-500 text-[9px]">
             <div>• Next.js 15 App Router</div>
             <div>• Firebase Auth & Firestore</div>
-            <div>• Gemini 2.5 Flash Proxy</div>
+            <div>• Role: {userRole || 'Admin'}</div>
             <div>• Cloud Storage Engine</div>
           </div>
         </div>
 
       </div>
 
-      {/* Footer User Badge & Exit to Public */}
+      {/* Footer User Badge & Exit / Log Out */}
       <div className="pt-3 border-t border-zinc-800/80 space-y-2">
         
         {/* User Card */}
-        <div className="flex items-center gap-2 p-2 rounded-lg bg-[#0c0c0e] border border-zinc-800">
-          <img
-            src={currentUser.avatar}
-            alt={currentUser.name}
-            className="w-7 h-7 rounded-full object-cover shrink-0 border border-zinc-700"
-          />
-          <div className="overflow-hidden leading-tight">
-            <span className="text-xs font-bold text-white truncate block">{currentUser.name}</span>
-            <span className="text-[9px] text-emerald-400 block truncate">{currentUser.role}</span>
+        <div className="flex items-center justify-between p-2 rounded-lg bg-[#0c0c0e] border border-zinc-800">
+          <div className="flex items-center gap-2 overflow-hidden">
+            <img
+              src={userProfile?.photoURL || userProfile?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80'}
+              alt={userProfile?.fullName || 'User'}
+              className="w-7 h-7 rounded-full object-cover shrink-0 border border-zinc-700"
+            />
+            <div className="overflow-hidden leading-tight">
+              <span className="text-xs font-bold text-white truncate block">
+                {userProfile?.fullName || userProfile?.name || 'Executive Staff'}
+              </span>
+              <span className="text-[9px] text-emerald-400 block truncate">
+                {userRole || 'Admin'}
+              </span>
+            </div>
           </div>
+
+          <button
+            onClick={() => logout()}
+            title="Log Out of Session"
+            id="admin-sidebar-logout-btn"
+            className="p-1.5 rounded bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 transition-colors"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+          </button>
         </div>
 
         <button

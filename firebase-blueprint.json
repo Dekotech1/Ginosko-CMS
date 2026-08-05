@@ -1,0 +1,21 @@
+{
+  "entities": {
+    "users": {
+      "title": "Users",
+      "description": "CMS authenticated users and authorization roles",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "fullName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["Super Admin", "Admin", "Editor"] },
+        "status": { "type": "string", "enum": ["Active", "Inactive"] },
+        "lastLogin": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "fullName", "email", "role", "status"]
+    }
+  }
+}

@@ -356,10 +356,17 @@ export const INITIAL_LEADS: EnterpriseLead[] = [
 ];
 
 export const CURRENT_USER: UserProfile = {
+  uid: 'usr-001',
+  fullName: 'Alexandre Dubois',
+  email: 'a.dubois@ginosko-energy.com',
+  photoURL: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+  role: 'Super Admin',
+  status: 'Active',
+  lastLogin: '2026-08-05T08:00:00.000Z',
+  createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '2026-08-05T08:00:00.000Z',
   id: 'usr-001',
   name: 'Alexandre Dubois',
-  email: 'a.dubois@ginosko-energy.com',
-  role: 'Super Admin',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
   department: 'Executive Content & Digital Strategy',
 };

@@ -15,6 +15,7 @@ export type AdminView =
   | 'editor' 
   | 'media' 
   | 'leads' 
+  | 'users'
   | 'analytics' 
   | 'settings';
 
@@ -114,15 +115,25 @@ export interface EnterpriseLead {
   notes?: string;
 }
 
-export type UserRole = 'Super Admin' | 'Senior Editor' | 'Sustainability Consultant' | 'Viewer';
+export type UserRole = 'Super Admin' | 'Admin' | 'Editor';
+
+export type UserStatus = 'Active' | 'Inactive';
 
 export interface UserProfile {
-  id: string;
-  name: string;
+  uid: string;
+  fullName: string;
   email: string;
+  photoURL: string;
   role: UserRole;
-  avatar: string;
-  department: string;
+  status: UserStatus;
+  lastLogin: string;
+  createdAt: string;
+  updatedAt: string;
+  // Aliases for compatibility
+  id?: string;
+  name?: string;
+  avatar?: string;
+  department?: string;
 }
 
 export interface ActivityLogItem {
