@@ -1,0 +1,6 @@
+{
+  "name": "Ginosko CMS",
+  "description": "Enterprise-grade CMS and management platform for Ginosko Consulting & Renewable Energy.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
